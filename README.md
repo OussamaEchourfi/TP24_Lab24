@@ -43,13 +43,8 @@ L'ensemble de l'écosystème est isolé et conteneurisé grâce à Docker et Doc
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) installé et en cours d'exécution.
 - S'assurer que les ports `80`, `8081`, `8085` et `3306` sont libres (arrêter les instances locales de MySQL ou serveurs web tels que Apache/XAMPP).
 
-### 1. Cloner le projet
-```bash
-git clone https://github.com/fati24la/Tp24-ConteneurisationSpringAngular.git
-cd Tp24-ConteneurisationSpringAngular
-```
 
-### 2. Lancer les conteneurs
+### 1. Lancer les conteneurs
 Exécutez la commande suivante à la racine du projet pour builder et démarrer tous les conteneurs :
 ```bash
 docker compose up --build
@@ -57,7 +52,7 @@ docker compose up --build
 
 > 💡 *Au premier lancement, le téléchargement des images de base et la compilation peuvent prendre quelques minutes.*
 
-### 3. Accès aux applications
+### 2. Accès aux applications
 
 | Service | URL d'accès | Description |
 | :--- | :--- | :--- |
