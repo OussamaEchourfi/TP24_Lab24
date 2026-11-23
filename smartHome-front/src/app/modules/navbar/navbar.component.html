@@ -1,0 +1,46 @@
+<header class="navbar-pro">
+  <div class="navbar-container">
+    <!-- Logo + Brand -->
+    <div class="navbar-brand">
+      <a routerLink="/" class="brand-link">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z" fill="currentColor" opacity="0.9"/>
+            <circle cx="12" cy="10" r="2" fill="white" opacity="0.7"/>
+          </svg>
+        </div>
+        <span class="brand-name">SmartHome</span>
+      </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar-nav">
+      <a routerLink="/devices" routerLinkActive="nav-active" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+        </svg>
+        Devices
+      </a>
+      <a routerLink="/category" routerLinkActive="nav-active" class="nav-link">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+        </svg>
+        Categories
+      </a>
+    </nav>
+
+    <!-- Right section -->
+    <div class="navbar-right">
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span class="status-text">System Online</span>
+      </div>
+      <a href="/" class="btn-login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-4 w-4">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+        Login
+      </a>
+    </div>
+  </div>
+</header>

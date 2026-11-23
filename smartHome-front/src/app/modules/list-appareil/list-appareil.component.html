@@ -1,0 +1,171 @@
+<div class="page-wrapper">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-title-section">
+      <div class="page-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="page-title">Devices</h1>
+        <p class="page-subtitle">Manage your smart home devices</p>
+      </div>
+    </div>
+
+    <div class="page-actions">
+      <button
+        (click)="switch_on_or_off(false)"
+        class="btn-action btn-off">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-action-icon">
+          <circle cx="12" cy="12" r="10"/><path d="M4.93 4.93l14.14 14.14"/>
+        </svg>
+        All Off
+      </button>
+      <button
+        (click)="switch_on_or_off(true)"
+        class="btn-action btn-on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-action-icon">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+        </svg>
+        All On
+      </button>
+      <button class="btn-add" (click)="openSaveDialog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="btn-add-icon">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        Add Device
+      </button>
+    </div>
+  </div>
+
+  <!-- Devices Grid -->
+  <div class="devices-grid">
+    <div *ngFor="let appareil of appareils" class="device-card" [class.device-on]="appareil.state" [class.device-off]="!appareil.state">
+
+      <!-- Image Section -->
+      <div class="device-image-wrapper">
+        <img class="device-image" [src]="appareil.photo" alt="{{ appareil.label }}">
+        <div class="device-status-badge" [class.badge-on]="appareil.state" [class.badge-off]="!appareil.state">
+          <span class="badge-dot"></span>
+          {{ appareil.state ? 'ON' : 'OFF' }}
+        </div>
+        <div class="device-category-tag" *ngIf="appareil.categorie">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px;">
+            <path d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
+          </svg>
+          {{appareil.categorie.label}}
+        </div>
+      </div>
+
+      <!-- Info Section -->
+      <div class="device-info">
+        <div class="device-meta">
+          <p class="device-label">{{appareil.label}}</p>
+          <p class="device-desc">{{appareil.description}}</p>
+        </div>
+        <div class="device-controls">
+          <p-inputSwitch [(ngModel)]="appareil.state" (onChange)="update(appareil)" class="device-switch"></p-inputSwitch>
+          <button pButton icon="pi pi-trash" class="btn-delete" (click)="delete(appareil.id)"></button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!appareils || appareils.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+        </svg>
+      </div>
+      <p class="empty-title">No devices yet</p>
+      <p class="empty-desc">Add your first smart device to get started</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Add Dialog -->
+<p-dialog header="Add New Device" [(visible)]="displaySaveDialog" [modal]="true" [responsive]="true" [style]="{width:'480px'}">
+  <div class="p-fluid dialog-form">
+    <div class="form-group">
+      <label for="label">Device Name</label>
+      <input id="label" pInputText [(ngModel)]="newAppareil.label" placeholder="e.g. Living Room TV"/>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input id="description" pInputText [(ngModel)]="newAppareil.description" placeholder="Short description..."/>
+    </div>
+    <div class="form-group">
+      <label>Photo</label>
+      <p-fileUpload name="photo" url="your_upload_url" accept="image/*" (onSelect)="onFileSelect($event)"></p-fileUpload>
+    </div>
+    <div class="form-row">
+      <div class="form-group flex-1">
+        <label for="category">Category</label>
+        <select class="form-select-pro" [compareWith]="compareWithIds" id="category" [(ngModel)]="newAppareil.categorie" name="category">
+          <option *ngFor="let category of categories" [ngValue]="category">{{ category.label }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Initial State</label>
+        <div class="state-toggle">
+          <p-inputSwitch [(ngModel)]="newAppareil.state"></p-inputSwitch>
+          <span class="state-label">{{ newAppareil.state ? 'On' : 'Off' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-dialog-footer dialog-footer">
+    <button pButton label="Cancel" class="p-button-secondary" (click)="displaySaveDialog = false"></button>
+    <button pButton label="Save Device" class="p-button-success" (click)="save()"></button>
+  </div>
+</p-dialog>
+
+<p-dialog header="Add Device" [(visible)]="displaySaveDialog" [modal]="true" [responsive]="true">
+  <div class="p-fluid">
+
+    <div class="p-field m-1">
+      <label for="label">Label</label>
+      <input id="label" pInputText [(ngModel)]="newAppareil.label"/>
+    </div>
+
+    <div class="p-field m-1">
+      <label for="label">description</label>
+      <input id="description" pInputText [(ngModel)]="newAppareil.description"/>
+    </div>
+
+    <div class="p-field m-1">
+      <label>Photo</label>
+      <p-fileUpload name="photo" url="your_upload_url" accept="image/*"
+                    (onSelect)="onFileSelect($event)"></p-fileUpload>
+    </div>
+
+
+    <div class="p-field m-1 flex justify-between">
+      <div class="p-field m-1">
+        <div class="p-field m-1">
+          <label for="category" class="mx-2">Category</label>
+          <select class="form-select " [compareWith]="compareWithIds" id="category" [(ngModel)]="newAppareil.categorie"
+                  name="category">
+            <option *ngFor="let category of categories" [ngValue]="category">{{ category.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-1 mx-2">
+        <label class="mx-3 ">State</label>
+        <p-inputSwitch [(ngModel)]="newAppareil.state"></p-inputSwitch>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="p-dialog-footer">
+    <button pButton label="Save" class="p-button-success" (click)="save()"></button>
+    <button pButton label="Cancel" class="p-button-secondary" (click)="displaySaveDialog = false"></button>
+  </div>
+</p-dialog>
